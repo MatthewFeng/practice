@@ -170,4 +170,42 @@ public class Solution {
 			System.out.println(i);
 		}
 	}
+
+	public static int count_the_paths(List<String> grid) {
+		// Write your solution here
+		int n = grid.size();
+		if (n == 0)
+			return 0;
+		int m = grid.get(0).length();
+
+		char[][] g = new char[n][m];
+
+		int k = 0;
+		for (String s : grid) {
+			g[k] = s.toCharArray();
+			k++;
+		}
+
+		int[][] p = new int[n][m];
+		p[n - 1][0] = 1;
+
+		for (int i = n - 1; i >= 0; i--) {
+			for (int j = 0; j < m; j++) {
+				if (g[i][j] != '1') {
+					if (i <= n - 2 && g[i + 1][j] == '0') {
+						p[i][j] = p[i][j] + p[i + 1][j];
+					}
+					if (j >= 1 && g[i][j - 1] == '0') {
+						p[i][j] = p[i][j] + p[i][j - 1];
+					}
+					p[i][j] %= 1000003;
+				}
+
+			}
+		}
+
+		return p[0][m - 1];
+
+	}
+
 }
